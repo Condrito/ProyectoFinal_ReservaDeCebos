@@ -40,19 +40,19 @@ export const Uploadfile = ({ registerForm }) => {
 
     function parseFile(file) {
       output('<strong>' + encodeURI(file.name) + '</strong>');
-      let imageName = file.name;
-
-      let isGood = /\.(?=gif|jpg|png|jpeg)/gi.test(imageName);
+      let imagenName = file.name;
+      console.log(file, imagenName);
+      let isGood = /\.(?=gif|jpg|png|jpeg)/gi.test(imagenName);
       if (isGood) {
         document.getElementById('start').classList.add('hidden');
         document.getElementById('response').classList.remove('hidden');
-        document.getElementById('notimage').classList.add('hidden');
+        document.getElementById('notimagen').classList.add('hidden');
         // Thumbnail Preview
-        document.getElementById('file-image').classList.remove('hidden');
-        document.getElementById('file-image').src = URL.createObjectURL(file);
+        document.getElementById('file-imagen').classList.remove('hidden');
+        document.getElementById('file-imagen').src = URL.createObjectURL(file);
       } else {
-        document.getElementById('file-image').classList.add('hidden');
-        document.getElementById('notimage').classList.remove('hidden');
+        document.getElementById('file-imagen').classList.add('hidden');
+        document.getElementById('notimagen').classList.remove('hidden');
         document.getElementById('start').classList.remove('hidden');
         document.getElementById('response').classList.add('hidden');
         document.getElementById('file-upload-form').reset();
@@ -74,17 +74,17 @@ export const Uploadfile = ({ registerForm }) => {
       <input
         id="file-upload"
         type="file"
-        name="image"
-        accept="image/*"
+        name="imagen"
+        accept="imagen/*"
         {...registerForm}
       />
 
       <label htmlFor="file-upload" id="file-drag">
-        <img id="file-image" src="#" alt="Preview" className="hidden" />
+        <img id="file-imagen" src="#" alt="Preview" className="hidden" />
         <div id="start">
           <i className="fa fa-download" aria-hidden="true"></i>
           <div className="divSelect">Selecciona un archivo de imagen para tu avatar</div>
-          <div id="notimage" className="hidden"></div>
+          <div id="notimagen" className="hidden"></div>
           <span id="file-upload-btn" className="btn btn-primary">
             Selecciona un archivo
           </span>

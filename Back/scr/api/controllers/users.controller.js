@@ -17,6 +17,7 @@ dotenv.config();
 
 const register = async (req, res, next) => {
   let catchImg = req.file?.path;
+  console.log('aqui', catchImg);
   try {
     await User.syncIndexes();
     const email = process.env.EMAIL;
@@ -74,6 +75,7 @@ const register = async (req, res, next) => {
           confirmationCode: confirmationCode,
         });
       } catch (error) {
+        if (req.file) deleteImgCloudinary(catchImg);
         return res.status(404).json(error.message);
       }
     }
@@ -414,35 +416,35 @@ const deleteUser = async (req, res, next) => {
 const cambiarRoll = async (req, res, next) => {
   try {
     const { idUser } = req.params;
-    const { newRoll } = req.body;
+    const { newRol } = req.body;
 
     // Verificar si se proporciona el nuevo rol en el req.body
-    if (!newRoll) {
+    if (!newRol) {
       return res
         .status(400)
         .json({ error: 'Debe proporcionar el nuevo rol del usuario.' });
     }
 
     // Verificar si el nuevo rol es válido (superAdmin, admin, o user)
-    if (newRoll !== 'superAdmin' && newRoll !== 'admin' && newRoll !== 'user') {
+    if (newRol !== 'superAdmin' && newRol !== 'admin' && newRol !== 'user') {
       return res.status(400).json({ error: 'Rol no válido.' });
     }
 
     // Buscar el usuario en la base de datos por su ID y cambiamos el rol del usuario
-    const usuarioNewRoll = await User.findByIdAndUpdate(
+    const usuarioNewRol = await User.findByIdAndUpdate(
       idUser,
-      { rol: newRoll },
+      { rol: newRol },
       { new: true } // Agregar la opción 'new: true' para devolver el documento actualizado
     );
 
     // Verificar si el usuario existe
-    if (!usuarioNewRoll) {
+    if (!usuarioNewRol) {
       return res.status(404).json({ error: 'Usuario no encontrado.' });
     }
 
     return res.status(200).json({
       message: 'Rol del usuario actualizado con éxito.',
-      usuarioNewRoll,
+      usuarioNewRol,
     });
   } catch (error) {
     return next(error);
@@ -465,6 +467,57 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
+//--------------------------------------------------------------------------------
+//···········MOSTRAR UN USUARIO (superAdmin)······························
+//--------------------------------------------------------------------------------
+
+const getUserById = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+
+    // Buscar el usuario por su ID en la base de datos
+    const user = await User.findById(userId);
+
+    // Verificar si el usuario existe
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado.' });
+    }
+
+    // Devolver el usuario en la respuesta
+    return res.status(200).json(user);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+//--------------------------------------------------------------------------------
+//······················DELETE USER (SuperAdmin)··································
+//--------------------------------------------------------------------------------
+
+const deleteUserByAdmin = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const userFile = await User.findById(userId);
+    // Eliminar los pedidos asociados al usuario
+    await Pedido.deleteMany({ user: userId });
+
+    // Eliminar las reservas asociadas al usuario
+    await Reserva.deleteMany({ user: userId });
+
+    // Eliminar el usuario
+    await User.findByIdAndDelete(userId);
+
+    if (await User.findById(userId)) {
+      return res.status(404).json('Dont delete');
+    } else {
+      deleteImgCloudinary(userFile.imagen);
+      return res.status(200).json('ok delete');
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   register,
   checkNewUser,
@@ -477,4 +530,6 @@ module.exports = {
   deleteUser,
   cambiarRoll,
   getAllUsers,
+  getUserById,
+  deleteUserByAdmin,
 };

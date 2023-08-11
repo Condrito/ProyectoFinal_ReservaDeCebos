@@ -1,6 +1,10 @@
 import { updateToken } from '../utils/updateToken';
 import { APIuser } from './serviceApiUser.config';
 
+//--------------------------------------------------------------------------------
+//·········································USERS··································
+//--------------------------------------------------------------------------------
+
 //! ------------------------------- REGISTER -----------------------------------
 export const registerUser = async (formData) => {
   return APIuser.post('/users/register', formData, {
@@ -58,6 +62,7 @@ export const changePasswordUser = async (formData) => {
 export const updateUser = async (formData) => {
   return APIuser.patch('/users/update/update', formData, {
     headers: {
+      'Content-Type': 'multipart/form-data',
       Authorization: `Bearer ${updateToken()}`,
     },
   })
@@ -82,6 +87,58 @@ export const deleteUser = async () => {
 export const resendCodeConfirmationUser = async (formData) => {
   console.log(formData);
   return APIuser.post('/users/resend', formData)
+    .then((res) => res)
+    .catch((error) => error);
+};
+
+//! --------------------- MOSTRAR TODOS LOS USERS --------------------------------
+
+export const mostrarUsers = async () => {
+  return APIuser.get('/users/getallusers', {
+    headers: {
+      Authorization: `Bearer ${updateToken()}`,
+    },
+  })
+
+    .then((res) => res)
+    .catch((error) => error);
+};
+
+//! --------------------- MOSTRAR USUARIO POR ID--------------------------------
+
+export const mostrarUserById = async (userId) => {
+  return APIuser.get(`/users/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${updateToken()}`,
+    },
+  })
+
+    .then((res) => res)
+    .catch((error) => error);
+};
+
+//! --------------------- CAMBIAR ROL USUARIO --------------------------------
+export const cambiarRol = async (formData, userId) => {
+  console.log(formData);
+
+  return APIuser.patch(`/users/updaterol/${userId}`, formData, {
+    headers: {
+      Authorization: `Bearer ${updateToken()}`,
+    },
+  })
+
+    .then((res) => res)
+    .catch((error) => error);
+};
+
+//!----------------------- DELETE BY SUPERADMIN---------------------------------------
+
+export const deleteUserByAdmin = async (userId) => {
+  return APIuser.delete(`/users/deleteuserbyadmin/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${updateToken()}`,
+    },
+  })
     .then((res) => res)
     .catch((error) => error);
 };

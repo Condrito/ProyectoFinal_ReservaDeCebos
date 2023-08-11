@@ -6,6 +6,7 @@ import { useUser } from '../context/userContext';
 
 export const Header = () => {
   const { user, logout } = useUser();
+
   return (
     <>
       <header>
@@ -46,7 +47,7 @@ export const Header = () => {
           {user !== null ? (
             <>
               <NavLink to="/profile">
-                <img className="profileCircle" src={user.image} alt={user.user} />
+                <img className="profileCircle" src={user.imagen} alt={user.user} />
               </NavLink>
             </>
           ) : null}

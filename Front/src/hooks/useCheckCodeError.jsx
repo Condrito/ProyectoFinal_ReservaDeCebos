@@ -10,7 +10,6 @@ export const useCheckCodeError = (
   //? si la respuesta es ok ---- > directamente esta el status en la primera clave es decir: res.status
   //? si la respuesta no esta ok--> res.response.status
 
-  console.log('entro ');
   //! ------------------ 200 : todo ok ---> testCheckOk: true
   if (res?.data?.testCheckOk?.toString() == 'true') {
     // comprobamos que vengas del login con el localStorage

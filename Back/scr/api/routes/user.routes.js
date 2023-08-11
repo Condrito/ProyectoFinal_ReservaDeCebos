@@ -12,6 +12,8 @@ const {
   deleteUser,
   cambiarRoll,
   getAllUsers,
+  getUserById,
+  deleteUserByAdmin,
 } = require('../controllers/users.controller');
 const {
   isAuth,
@@ -35,8 +37,16 @@ UserRoutes.patch(
 );
 UserRoutes.delete('/', [isAuth], deleteUser);
 
-UserRoutes.patch('/updateroll/:idUser', [isAuthSuperAdmin], cambiarRoll);
+UserRoutes.patch('/updaterol/:idUser', [isAuthSuperAdmin], cambiarRoll);
 UserRoutes.get('/getallusers', [isAuthSuperAdmin], getAllUsers);
+UserRoutes.delete(
+  '/deleteuserbyadmin/:userId',
+  [isAuthSuperAdmin],
+  deleteUserByAdmin
+);
+
+// Ruta para obtener un solo usuario por su ID
+UserRoutes.get('/:userId', [isAuthSuperAdmin], getUserById);
 //·························REDIRECT···························
 
 UserRoutes.patch('/forgotpassword/sendPassword/:id', sendPassword);
