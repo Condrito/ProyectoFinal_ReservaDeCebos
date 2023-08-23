@@ -22,13 +22,13 @@ export const UserDetail = () => {
     useUserViewByIdError(res);
   }, [res]);
 
-  useEffect(() => console.log('aqui', changeRol), [changeRol]);
+  useEffect(() => {
+    console.log(changeRol);
+  }, [changeRol]);
 
   const user = res?.data;
-  console.log(user?.rol);
 
   const updateUserRole = (newRole) => {
-    console.log('entro');
     setChangeRol(newRole);
   };
 

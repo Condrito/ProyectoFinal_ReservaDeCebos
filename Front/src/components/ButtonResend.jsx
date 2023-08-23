@@ -33,8 +33,6 @@ export const ButtonReSend = ({ setReloadPageError }) => {
 
   //!2) ---------------- USEEFFECT  QUE GESTIONAN LOS ERRRORES Y EL 200 CON UN CUSTOMhook -----
   useEffect(() => {
-    console.log(res);
-
     useResendCode(res, setReloadPageError, setRes);
   }, [res]);
 

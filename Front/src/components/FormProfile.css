@@ -36,3 +36,13 @@
     margin: 0.5rem;
   }
 }
+
+
+.imageCebo {
+  background-color: white;
+  width: 280px;
+  height: 280px;
+  object-fit: cover;
+ 
+  
+}

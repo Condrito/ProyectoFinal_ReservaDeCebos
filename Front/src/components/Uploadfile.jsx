@@ -41,7 +41,7 @@ export const Uploadfile = ({ registerForm }) => {
     function parseFile(file) {
       output('<strong>' + encodeURI(file.name) + '</strong>');
       let imagenName = file.name;
-      console.log(file, imagenName);
+
       let isGood = /\.(?=gif|jpg|png|jpeg)/gi.test(imagenName);
       if (isGood) {
         document.getElementById('start').classList.add('hidden');
@@ -83,7 +83,7 @@ export const Uploadfile = ({ registerForm }) => {
         <img id="file-imagen" src="#" alt="Preview" className="hidden" />
         <div id="start">
           <i className="fa fa-download" aria-hidden="true"></i>
-          <div className="divSelect">Selecciona un archivo de imagen para tu avatar</div>
+          <div className="divSelect">Selecciona un archivo de imagen</div>
           <div id="notimagen" className="hidden"></div>
           <span id="file-upload-btn" className="btn btn-primary">
             Selecciona un archivo

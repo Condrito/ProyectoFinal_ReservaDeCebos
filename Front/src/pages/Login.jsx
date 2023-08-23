@@ -26,7 +26,6 @@ export const Login = () => {
     setUser(() => null);
   }, []);
   useEffect(() => {
-    console.log(res);
     useLoginError(res, setLoginOk, userLogin, setRes);
   }, [res]);
 

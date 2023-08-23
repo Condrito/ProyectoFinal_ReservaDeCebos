@@ -13,7 +13,6 @@ export const ChangeRolUser = ({ userId, currentRol, updateUserRole }) => {
     const { newRol } = formData;
 
     if (newRol !== currentRol) {
-      console.log(newRol, currentRol);
       Swal.fire({
         title: '¿Estás seguro que quieres cambiar el Rol de este usuario?',
         icon: 'warning',
@@ -41,7 +40,6 @@ export const ChangeRolUser = ({ userId, currentRol, updateUserRole }) => {
   };
 
   useEffect(() => {
-    console.log(res);
     useChangeRolError(res);
   }, [res]);
 

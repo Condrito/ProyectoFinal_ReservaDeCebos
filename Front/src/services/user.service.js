@@ -85,7 +85,6 @@ export const deleteUser = async () => {
 //! --------------------- RESEND CODE --------------------------------
 
 export const resendCodeConfirmationUser = async (formData) => {
-  console.log(formData);
   return APIuser.post('/users/resend', formData)
     .then((res) => res)
     .catch((error) => error);
@@ -119,8 +118,6 @@ export const mostrarUserById = async (userId) => {
 
 //! --------------------- CAMBIAR ROL USUARIO --------------------------------
 export const cambiarRol = async (formData, userId) => {
-  console.log(formData);
-
   return APIuser.patch(`/users/updaterol/${userId}`, formData, {
     headers: {
       Authorization: `Bearer ${updateToken()}`,

@@ -1,11 +1,18 @@
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css);
 
-#file-image {
-  width: 270px;
+
+#file-upload-form #file-imagen {
+  background-color: white;
+  width: 50%;
+  height: 50%;
+  object-fit:cover;
+  
 }
 
 #file-image.hidden {
   display: none;
+  width: 10%;
+  height: 10%
 }
 
 .uploader {
@@ -84,6 +91,7 @@ i.fa {
 
 #file-upload-form {
   margin-top: 20px;
+  
 }
 
 .uploader > div {

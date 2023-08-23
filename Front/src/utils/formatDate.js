@@ -10,3 +10,12 @@ export const formatDate = (dateString) => {
   };
   return new Date(dateString).toLocaleString(undefined, options);
 };
+
+export const formatDateWithoutHours = (dateString) => {
+  const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  return new Date(dateString).toLocaleString(undefined, options);
+};

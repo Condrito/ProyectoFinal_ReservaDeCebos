@@ -1,29 +1,21 @@
-import './FormProfile.css';
-
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2/dist/sweetalert2.all.js';
-
-import { useUser } from '../context/userContext';
-import { useUpdateError } from '../hooks/useUpdateError';
-import { updateUser } from '../services/user.service';
-import { FigureUser } from './FigureUser';
+import './FormProfile';
 import { Uploadfile } from './Uploadfile';
+import { useForm } from 'react-hook-form';
+import { actualizarCebo } from '../services/cebos.service';
+import { useCeboUpdateError } from '../hooks';
+import { EliminarCebo } from './EliminarCebo';
 
-export const FormProfile = () => {
-  const { user, setUser, logout } = useUser();
+export const CeboCardUpdate = ({ ceboData, updateAndReload }) => {
   const { register, handleSubmit } = useForm();
   const [res, setRes] = useState({});
   const [send, setSend] = useState(false);
 
-  const defaultData = {
-    name: user?.user,
-  };
-
   //! ------------ 1) La funcion que gestiona el formulario----
   const formSubmit = (formData) => {
     Swal.fire({
-      title: 'Are you sure you want to change your data profile?',
+      title: 'Estas seguro que quieres actualizar el catàlogo?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: 'rgb(73, 193, 162)',
@@ -37,47 +29,78 @@ export const FormProfile = () => {
         if (inputfile.length !== 0) {
           customFormData = { ...formData, imagen: inputfile[0] };
           setSend(true);
-          setRes(await updateUser(customFormData));
+          setRes(await actualizarCebo(customFormData, ceboData._id));
           setSend(false);
         } else {
           customFormData = { ...formData };
           setSend(true);
-          setRes(await updateUser(customFormData));
+          setRes(await actualizarCebo(customFormData, ceboData._id));
           setSend(false);
         }
+        updateAndReload();
       }
     });
   };
 
   //! -------------- 2 ) useEffect que gestiona la parte de la respuesta ------- customHook
+  useEffect(() => {}, [ceboData]);
 
   useEffect(() => {
-    console.log(res);
-    useUpdateError(res, setRes, setUser, logout);
+    useCeboUpdateError(res, setRes);
   }, [res]);
-
+  console.log(ceboData?._id);
   return (
     <>
       <div className="containerProfile">
         <div className="containerDataNoChange">
-          <FigureUser user={user} />
+          <img className="imageCebo" src={ceboData?.imagen} alt={ceboData?.ceboVivo} />
         </div>
+
         <div className="form-wrap formProfile">
-          <h1>Change your data profile ♻</h1>
-          <p>Please, enter your new data profile</p>
+          <h1>Aquí puedes actualizar el cebo en el catálogo ♻</h1>
+
           <form onSubmit={handleSubmit(formSubmit)}>
             <div className="user_container form-group">
+              <label htmlFor="custom-input" className="custom-placeholder">
+                nombre
+              </label>
               <input
                 className="input_user"
                 type="text"
-                id="name"
-                name="name"
+                id="ceboVivo"
+                name="ceboVivo"
                 autoComplete="false"
-                defaultValue={defaultData?.name}
-                {...register('name')}
+                defaultValue={ceboData?.ceboVivo}
+                {...register('ceboVivo')}
+              />
+
+              <label htmlFor="custom-input" className="custom-placeholder">
+                precio
+              </label>
+              <input
+                className="input_user"
+                type="text"
+                id="precio"
+                name="precio"
+                autoComplete="false"
+                defaultValue={ceboData?.precio}
+                {...register('precio')}
+              />
+
+              <label htmlFor="custom-input" className="custom-placeholder">
+                código
+              </label>
+              <input
+                className="input_user"
+                type="text"
+                id="codigo"
+                name="cogigo"
+                autoComplete="false"
+                defaultValue={ceboData?.codigo}
+                {...register('codigo')}
               />
               <label htmlFor="custom-input" className="custom-placeholder">
-                username
+                código
               </label>
             </div>
             <Uploadfile />
@@ -88,11 +111,12 @@ export const FormProfile = () => {
                 disabled={send}
                 style={{ background: send ? '#49c1a388' : '#49c1a2' }}
               >
-                CHANGE DATA PROFILE
+                Actualizar en el catálogo
               </button>
             </div>
           </form>
         </div>
+        <EliminarCebo ceboId={ceboData?._id} />
       </div>
     </>
   );

@@ -2,19 +2,19 @@ import './Register.css';
 
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import { Uploadfile } from '../components';
-import { useUser } from '../context/userContext';
-import { useRegisterError } from '../hooks';
-import { registerUser } from '../services/user.service';
 
-export const Register = () => {
-  const { setAllUser, bridgeData } = useUser();
+import { useCrearCeboError } from '../hooks';
+
+import { crearCebo } from '../services/cebos.service';
+
+export const CeboAdd = () => {
   const { register, handleSubmit } = useForm();
   const [res, setRes] = useState({});
   const [send, setSend] = useState(false);
-  const [okRegister, setOkRegister] = useState(false);
+  const [newCeboOk, setNewCeboOk] = useState(false);
 
   //! ------------------------------------------------------------------------------
   //? 1) funcion que se encarga del formulario - de la data del formulario
@@ -26,23 +26,23 @@ export const Register = () => {
     if (inputFile.length !== 0) {
       // cuando me han hayan puesto una imagen por el input
 
-      const custonFormData = {
+      const customFormData = {
         ...formData,
         imagen: inputFile[0],
       };
 
       setSend(true);
-      setRes(await registerUser(custonFormData));
+      setRes(await crearCebo(customFormData));
       setSend(false);
 
       //! me llamo al servicio
     } else {
-      const custonFormData = {
+      const customFormData = {
         ...formData,
       };
 
       setSend(true);
-      setRes(await registerUser(custonFormData));
+      setRes(await crearCebo(customFormData));
       setSend(false);
 
       ///! me llamo al servicio
@@ -53,26 +53,25 @@ export const Register = () => {
   //? 2) funcion que se encarga del formulario- de la data del formulario
   //! ------------------------------------------------------------------------------
   useEffect(() => {
-    useRegisterError(res, setOkRegister, setRes, setAllUser);
-    if (res?.status == 201) bridgeData('ALLUSER');
+    useCrearCeboError(res, setNewCeboOk, setRes);
   }, [res]);
 
   //! ------------------------------------------------------------------------------
   //? 3) Estados de navegacion ----> lo veremos en siguiente proyectos
   //! ------------------------------------------------------------------------------
 
-  if (okRegister) {
-    return <Navigate to="/verifyCode" />;
+  if (newCeboOk) {
+    return <Navigate to="/gestionarcatalogo" />;
   }
   return (
     <>
       <div className="form-wrap">
-        <h1>Registrate</h1>
+        <h1>Crea una nueva ficha de cebo y añadela al catálogo</h1>
 
         <form onSubmit={handleSubmit(formSubmit)}>
           <div className="user_container form-group">
             <label htmlFor="custom-input" className="custom-placeholder">
-              Nombre de usuario
+              Nombre
             </label>
             <input
               className="input_user"
@@ -80,46 +79,34 @@ export const Register = () => {
               id="name"
               name="name"
               autoComplete="false"
-              {...register('name', { required: true })}
+              {...register('ceboVivo', { required: true })}
             />
           </div>
-          <div className="password_container form-group">
+
+          <div className="telf_container form-group">
             <label htmlFor="custom-input" className="custom-placeholder">
-              Contraseña
+              Código
             </label>
             <input
               className="input_user"
-              type="password"
-              id="password"
-              name="password"
+              type="codigo"
+              id="codigo"
+              name="codigo"
               autoComplete="false"
-              {...register('password', { required: true })}
-            />
-          </div>
-          <div className="email_container form-group">
-            <label htmlFor="custom-input" className="custom-placeholder">
-              Email
-            </label>
-            <input
-              className="input_user"
-              type="email"
-              id="email"
-              name="email"
-              autoComplete="false"
-              {...register('email', { required: true })}
+              {...register('codigo', { required: true })}
             />
           </div>
           <div className="telf_container form-group">
             <label htmlFor="custom-input" className="custom-placeholder">
-              Número de teléfono
+              Precio
             </label>
             <input
               className="input_user"
-              type="telf"
-              id="telf"
-              name="telf"
+              type="precio"
+              id="precio"
+              name="precio"
               autoComplete="false"
-              {...register('telf', { required: true })}
+              {...register('precio', { required: true })}
             />
           </div>
 
@@ -132,21 +119,10 @@ export const Register = () => {
               disabled={send}
               style={{ background: send ? '#007DBC' : '#7ebbda' }}
             >
-              Registrarse
+              Añadir al catálogo
             </button>
           </div>
-          <p className="bottom-text">
-            <small>
-              Al hacer clic en el botón de Registrarse, aceptas nuestros{' '}
-              <a href="#">términos y condiciones</a> y{' '}
-              <a href="#">política de privacidad</a>
-            </small>
-          </p>
         </form>
-
-        <p>
-          ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión aquí</Link>
-        </p>
       </div>
     </>
   );

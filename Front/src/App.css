@@ -9,15 +9,7 @@ body {
   min-height: 100vh;
 }
 
-#root {
-  width: 100vw;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  position: fixed;
-}
+
 
 main {
   min-height: 70vh;

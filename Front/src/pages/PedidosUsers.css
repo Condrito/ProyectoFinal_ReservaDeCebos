@@ -1,0 +1,30 @@
+.catalogoImg{
+    max-width: 300px;
+    max-height: 400px;
+}
+.pedidosContainer{
+    padding:1rem 0 1rem 0;
+    border: solid black 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 90%;
+    height: 90%;
+    gap:1rem
+
+}
+.pedidoContainer{
+    border: solid red 1px;
+    
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction:row;
+    flex-wrap: nowrap;
+    width: 100%;
+    height: 100%;
+    gap:1rem
+
+}

@@ -20,7 +20,6 @@ export const ForgotPassword = () => {
   };
   //! 2) ----------------USEEFFECT QUE GESTIONA LA RES CON SUS ERRORES Y SUS 200
   useEffect(() => {
-    console.log(res);
     useForgotPassword(res, setRes, setForgotOk);
   }, [res]);
 

@@ -5,7 +5,6 @@ export const useRegisterError = (res, setRegisterOk, setRes) => {
   //? si la respuesta no esta ok--> res.response.status
   //! ------------------ 201 : todo ok
   if (res?.status == 201) {
-    console.log('entro en el if 🎉');
     const dataToString = JSON.stringify(res);
     localStorage.setItem('data', dataToString);
     setRegisterOk(() => true);

@@ -13,9 +13,15 @@ import {
 } from './components';
 import { UserContextProvider } from './context/userContext';
 import {
+  CeboAdd,
+  CeboDetail,
   CheckCode,
   Dashboard,
   ForgotPassword,
+  GestionarCatalogo,
+  GestionarPedidos,
+  GestionarReservas,
+  GestionarStock,
   Home,
   Login,
   MisPedidos,
@@ -90,6 +96,58 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <ProtectedAdmin>
                 <PanelAdmin />
               </ProtectedAdmin>
+            }
+          />
+          <Route
+            path="/gestionarpedidos"
+            element={
+              <ProtectedAdmin>
+                <GestionarPedidos />
+              </ProtectedAdmin>
+            }
+          />
+          <Route
+            path="/gestionarreservas"
+            element={
+              <ProtectedAdmin>
+                <GestionarReservas />
+              </ProtectedAdmin>
+            }
+          />
+          <Route
+            path="/gestionarstock"
+            element={
+              <ProtectedAdmin>
+                <GestionarStock />
+              </ProtectedAdmin>
+            }
+          />
+          <Route
+            path="/gestionarcatalogo"
+            element={
+              <ProtectedAdmin>
+                <GestionarCatalogo />
+              </ProtectedAdmin>
+            }
+          />
+          <Route
+            path="/cebo/:ceboId"
+            element={
+              <Protected>
+                <ProtectedAdmin>
+                  <CeboDetail />
+                </ProtectedAdmin>
+              </Protected>
+            }
+          />
+          <Route
+            path="/cebo/add"
+            element={
+              <Protected>
+                <ProtectedAdmin>
+                  <CeboAdd />
+                </ProtectedAdmin>
+              </Protected>
             }
           />
           <Route
