@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { mostrarCatalogo } from '../services/cebos.service';
 import { useMostrarCatalogoError } from '../hooks';
 import { NavLink, Navigate } from 'react-router-dom';
-import { CeboCard, RealizarInventario, StockCard } from '../components';
+import { CeboCard, ModificarStock, RealizarInventario, StockCard } from '../components';
 
 export const GestionarStock = () => {
   const [res, setRes] = useState([]);
   const [resError, setError] = useState(false);
+  const [reload, setReload] = useState(0);
 
   const crearListaCebo = async () => {
     setRes(await mostrarCatalogo());
@@ -14,8 +15,11 @@ export const GestionarStock = () => {
 
   useEffect(() => {
     crearListaCebo();
-  }, []);
+  }, [reload]);
 
+  const reloadPage = () => {
+    setReload(reload + 1);
+  };
   useEffect(() => {
     useMostrarCatalogoError(res, setError);
   }, [res]);
@@ -33,7 +37,8 @@ export const GestionarStock = () => {
             <li key={item._id}>
               <CeboCard ceboData={item} />
               <StockCard stockData={item.stocks} />
-              <RealizarInventario />
+              <RealizarInventario ceboId={item._id} reloadPage={reloadPage} />
+              <ModificarStock ceboId={item._id} reloadPage={reloadPage} />
             </li>
           ))}
         </ul>

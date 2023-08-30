@@ -31,17 +31,16 @@ export const PedidosUsers = () => {
   }
 
   return (
-    <div>
-      <div>PedidosUsers</div>
+    <div className="pedidos-page-container">
       {fechaDelPedido == null ? (
         <>
-          <h1>Choose a Day</h1>
+          <h3>Elige primero el día que quieres venir a recoger tu pedido de cebo</h3>
           <DayPicker selectedDate={fechaDelPedido} onDateChange={handleDateChange} />
         </>
       ) : (
-        <ul>
+        <ul className="pedidos-page-container">
           {res.data.map((item) => (
-            <li key={item._id}>
+            <li className="pedidos-user" key={item._id}>
               <CeboCard ceboData={item} />
               <RealizarPedido fechaDelPedido={fechaDelPedido} ceboId={item._id} />
             </li>

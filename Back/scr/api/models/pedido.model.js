@@ -8,7 +8,7 @@ const PedidosSchema = new Schema(
     cantidad: { type: Number, default: 0, required: true },
     estado: {
       type: String,
-      enum: ['pendiente', 'cancelado', 'confirmado'],
+      enum: ['pendiente', 'cancelado', 'confirmado', 'entregado'],
       default: 'pendiente',
     },
   },

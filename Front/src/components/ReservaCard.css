@@ -1,0 +1,15 @@
+/* Estilo para el estado 'pendiente' */
+.estado-pendiente {
+  color: rgb(224, 162, 75); /* Amarillo anaranjado */
+}
+
+/* Estilo para el estado 'cancelado' */
+.estado-cancelada {
+  color: red; /* Rojo */
+}
+
+/* Estilo para el estado 'confirmado' */
+.estado-confirmada {
+  color: green; /* Verde */
+}
+

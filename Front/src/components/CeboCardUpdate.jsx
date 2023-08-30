@@ -6,14 +6,17 @@ import { useForm } from 'react-hook-form';
 import { actualizarCebo } from '../services/cebos.service';
 import { useCeboUpdateError } from '../hooks';
 import { EliminarCebo } from './EliminarCebo';
+import { useParams } from 'react-router-dom';
 
-export const CeboCardUpdate = ({ ceboData, updateAndReload }) => {
+export const CeboCardUpdate = ({ ceboData, ceboView }) => {
   const { register, handleSubmit } = useForm();
   const [res, setRes] = useState({});
   const [send, setSend] = useState(false);
+  const { ceboId } = useParams();
 
   //! ------------ 1) La funcion que gestiona el formulario----
   const formSubmit = (formData) => {
+    console.log('datos formulario', formData);
     Swal.fire({
       title: 'Estas seguro que quieres actualizar el catàlogo?',
       icon: 'warning',
@@ -27,17 +30,23 @@ export const CeboCardUpdate = ({ ceboData, updateAndReload }) => {
         let customFormData;
 
         if (inputfile.length !== 0) {
-          customFormData = { ...formData, imagen: inputfile[0] };
+          customFormData = {
+            ceboVivo: formData.ceboVivo == '' ? ceboData.ceboVivo : formData.ceboVivo,
+            precio: formData.precio == '' ? ceboData.precio : formData.precio,
+            imagen: inputfile[0],
+          };
           setSend(true);
-          setRes(await actualizarCebo(customFormData, ceboData._id));
+          setRes(await actualizarCebo(customFormData, ceboId));
           setSend(false);
         } else {
-          customFormData = { ...formData };
+          customFormData = {
+            ceboVivo: formData.ceboVivo == '' ? ceboData.ceboVivo : formData.ceboVivo,
+            precio: formData.precio == '' ? ceboData.precio : formData.precio,
+          };
           setSend(true);
-          setRes(await actualizarCebo(customFormData, ceboData._id));
+          setRes(await actualizarCebo(customFormData, ceboId));
           setSend(false);
         }
-        updateAndReload();
       }
     });
   };
@@ -47,8 +56,11 @@ export const CeboCardUpdate = ({ ceboData, updateAndReload }) => {
 
   useEffect(() => {
     useCeboUpdateError(res, setRes);
+    if (res?.status == 200) {
+      ceboView(ceboId);
+    }
   }, [res]);
-  console.log(ceboData?._id);
+  console.log(ceboId);
   return (
     <>
       <div className="containerProfile">
@@ -86,22 +98,6 @@ export const CeboCardUpdate = ({ ceboData, updateAndReload }) => {
                 defaultValue={ceboData?.precio}
                 {...register('precio')}
               />
-
-              <label htmlFor="custom-input" className="custom-placeholder">
-                código
-              </label>
-              <input
-                className="input_user"
-                type="text"
-                id="codigo"
-                name="cogigo"
-                autoComplete="false"
-                defaultValue={ceboData?.codigo}
-                {...register('codigo')}
-              />
-              <label htmlFor="custom-input" className="custom-placeholder">
-                código
-              </label>
             </div>
             <Uploadfile />
             <div className="btn_container">

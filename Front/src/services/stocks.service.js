@@ -21,3 +21,11 @@ export const inventario = async (formData, ceboId) => {
     .then((res) => res)
     .catch((error) => error);
 };
+//! -------------------------------  OPERA EL STOCK TOTAL -----------------------------------
+export const oprerarStock = async (formData, ceboId) => {
+  return APIuser.patch(`/stock/modificarstock/${ceboId}`, formData, {
+    headers: { Authorization: `Bearer ${updateToken()}` },
+  })
+    .then((res) => res)
+    .catch((error) => error);
+};

@@ -1,7 +1,7 @@
 import React from 'react';
 import { CeboCard } from './CeboCard';
 import { formatDate } from '../utils/formatDate';
-import './PedidoCard.css';
+import './ReservaCard.css';
 export const ReservaCard = ({ reservaData }) => {
   let estadoClassName = '';
 

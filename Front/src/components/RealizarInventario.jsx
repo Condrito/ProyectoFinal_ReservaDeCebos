@@ -2,24 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { crearPedido } from '../services/pedidos.service';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2/dist/sweetalert2.all.js';
-import { useCrearPedidoError } from '../hooks';
+import { useCrearPedidoError, useInventarioError } from '../hooks';
 import { inventario } from '../services/stocks.service';
 
-export const RealizarInventario = ({ fechaDelPedido, ceboId }) => {
+export const RealizarInventario = ({ ceboId, reloadPage }) => {
   const { handleSubmit, register } = useForm();
   const [res, setRes] = useState({});
   const [send, setSend] = useState(false);
 
   const formSubmit = async (formData) => {
-    const { cantidad } = formData;
+    const { stockTotal } = formData;
     const customFormData = {
-      fechaDelPedido: fechaDelPedido,
-      cantidad: cantidad,
+      stockTotal: stockTotal,
     };
 
-    if (cantidad > 0) {
+    if (stockTotal > 0) {
       Swal.fire({
-        title: '¿Quieres confirmar el pedido?',
+        title: '¿Confirmas el nuevo stock?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: 'rgb(73, 193, 162)',
@@ -30,6 +29,7 @@ export const RealizarInventario = ({ fechaDelPedido, ceboId }) => {
           setSend(true);
           setRes(await inventario(customFormData, ceboId));
           setSend(false);
+          reloadPage();
         }
       });
     } else {
@@ -43,7 +43,7 @@ export const RealizarInventario = ({ fechaDelPedido, ceboId }) => {
   };
 
   useEffect(() => {
-    useCrearPedidoError(res);
+    useInventarioError(res);
   }, [res]);
 
   return (

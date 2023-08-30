@@ -12,6 +12,7 @@ export const CheckCode = () => {
   const [send, setSend] = useState(false);
   const [okCheck, setOkCheck] = useState(false);
   const [reloadPageError, setReloadPageError] = useState(false);
+  const [autoLogin, setAutologin] = useState(false);
   const [deleteUser, setDeleteUser] = useState(false);
   const { allUser, userLogin, setUser, user } = useUser();
   const { register, handleSubmit } = useForm();
@@ -62,7 +63,7 @@ export const CheckCode = () => {
   if (okCheck) {
     if (!localStorage.getItem('user')) {
       // autologin
-      setOkCheck(() => false);
+      setOkCheck(false);
       useAutoLogin(allUser, userLogin, setOkCheck);
     } else {
       return <Navigate to="/dashboard" />;

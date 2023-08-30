@@ -1,0 +1,128 @@
+.panel-container {
+  
+  width: 100%;
+  min-height: 70vh;
+  display: grid;
+}
+  
+  .panel-button {
+ 
+    height: 100%;
+    width: 100%;
+ 
+    background-color: #0082C3;
+
+   
+  }
+  .panel-button:hover{
+    background-color: #62bcea;
+  }
+  .panel-button>a{
+    height: 100%;
+    width: 100%;
+    color: white;
+    font-size: 40px;
+  }
+
+  
+/* Estilos para dispositivos móviles */
+@media (max-width: 768px) {
+  .superadmin{
+    padding: 20rem 5rem 20rem 5rem;
+  }
+  .admin {
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr ;
+    grid-template-columns: 1fr ;
+   gap: 2rem;
+   padding: 2rem;
+  }
+  .user {
+    grid-template-rows: 1fr 1fr 1fr 1fr  ;
+    grid-template-columns: 1fr ;
+   gap: 2rem;
+   padding: 2rem;
+  }
+  .entregas {
+    background: #0082C3;
+    text-align: center;
+  
+    grid-column-start: 1; 
+    grid-column-end: 1; 
+    grid-row-start: 1; 
+    grid-row-end: 1;
+  }
+  .panel-button>a{
+    height: 100%;
+    width: 100%;
+    color: white;
+    font-size: 20px;
+  }
+}
+
+/* Estilos para tabletas */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .superadmin{
+    padding: 15rem 15rem 15rem 15rem;
+  }
+  .admin {
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr ;
+   gap: 3rem;
+   padding: 3rem;
+  }
+  .user {
+    grid-template-rows: 1fr 1fr ;
+    grid-template-columns: 1fr 1fr ;
+   gap: 3rem;
+   padding: 3rem;
+  }
+  .entregas {
+    background: #0082C3;
+    text-align: center;
+   
+    grid-column-start: 1; 
+    grid-column-end: 3; 
+    grid-row-start: 1; 
+    grid-row-end: 2;
+  }
+  .panel-button>a{
+    height: 100%;
+    width: 100%;
+    color: white;
+    font-size: 30px;
+  }
+}
+
+/* Estilos para escritorios */
+@media (min-width: 1025px) {
+  .superadmin{
+    padding: 15rem 20rem 15rem 20rem ;
+  }
+  .admin {
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr ;
+   gap: 6rem;
+   padding: 6rem;
+  }
+  .user {
+    grid-template-rows: 1fr 1fr ;
+    grid-template-columns: 1fr 1fr ;
+   gap: 6rem;
+   padding: 6rem;
+  }
+  .entregas {
+    background: #0082C3;
+    text-align: center;
+   
+    grid-column-start: 1; 
+    grid-column-end: 3; 
+    grid-row-start: 1; 
+    grid-row-end: 2;
+  }
+  .panel-button>a{
+    height: 100%;
+    width: 100%;
+    color: white;
+    font-size: 40px;
+  }
+}

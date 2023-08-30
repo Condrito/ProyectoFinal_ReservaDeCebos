@@ -46,10 +46,8 @@ export const ChangeRolUser = ({ userId, currentRol, updateUserRole }) => {
   return (
     <>
       <div>
-        <h2>Selecciona el Rol de Usuario</h2>
-        <form onSubmit={handleSubmit(formSubmit)}>
+        <form className="form-container" onSubmit={handleSubmit(formSubmit)}>
           <label>
-            Nuevo rol
             <select
               {...register('newRol')}
               onChange={(e) => setValue('newRol', e.target.value)}
@@ -61,7 +59,7 @@ export const ChangeRolUser = ({ userId, currentRol, updateUserRole }) => {
           </label>
 
           <button
-            className="btn"
+            className="btn rol"
             type="submit"
             disabled={send}
             style={{ background: send ? '#49c1a388' : '#49c1a2' }}

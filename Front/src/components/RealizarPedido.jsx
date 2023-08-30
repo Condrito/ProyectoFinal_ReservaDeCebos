@@ -46,8 +46,8 @@ export const RealizarPedido = ({ fechaDelPedido, ceboId }) => {
   }, [res]);
 
   return (
-    <div className="form-wrap">
-      <h1>Realizar Pedido</h1>
+    <div className="form-wrap pedir-container">
+      <h3>Realizar Pedido</h3>
 
       <form onSubmit={handleSubmit(formSubmit)}>
         <div className="email_container form-group">

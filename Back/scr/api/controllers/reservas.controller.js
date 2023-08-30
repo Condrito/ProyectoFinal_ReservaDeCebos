@@ -78,33 +78,21 @@ const borrarReserva = async (req, res, next) => {
           .json({ error: 'No se puede borrar una reserva confirmada.' });
       }
 
-      // Buscar el usuario asociado a la reserva
       const user = await User.findById(reserva.user);
 
       // Verificar si el usuario existe
       if (!user) {
         return res.status(404).json({ error: 'Usuario no encontrado.' });
       }
-
-      // Buscar el índice de la reserva en el array de reservas del usuario
-      const reservaIndex = user.reservas.indexOf(idReserva);
-
-      // Verificar si la reserva está en el array de reservas del usuario
-      if (reservaIndex === -1) {
-        return res
-          .status(404)
-          .json({ error: 'Reserva no encontrada en el usuario.' });
-      }
+      const arrayReservas = user.reservas;
 
       // Eliminar la reserva del array de reservas del usuario
-      user.reservas.splice(reservaIndex, 1);
+      arrayReservas.pull(idReserva);
 
-      // Guardar los cambios en el usuario para que se reflejen en la base de datos
-      await user.save();
+      await User.findByIdAndUpdate(user._id, { reservas: arrayReservas });
 
       // Eliminar la reserva de la base de datos
       await Reserva.findByIdAndDelete(idReserva);
-
       return res
         .status(200)
         .json({ message: 'Reserva cancelada y eliminada correctamente.' });
@@ -184,10 +172,61 @@ const getAllReservas = async (req, res, next) => {
     return next(error);
   }
 };
+//--------------------------------------------------------------------------------
+//····································ENTREGAR RESERVA·····························
+//--------------------------------------------------------------------------------
 
+const entregarReserva = async (req, res, next) => {
+  try {
+    const { idReserva } = req.params;
+
+    // Buscar la reserva en la base de datos
+    const reserva = await Reserva.findById(idReserva);
+
+    // Verificar si la reserva existe
+    if (!reserva) {
+      return res.status(404).json({ error: 'Reserva no encontrada.' });
+    }
+
+    // Verificar si la reserva tiene el estado "confirmada"
+    if (reserva.estado !== 'confirmada') {
+      return res.status(400).json({
+        error: 'La reserva no está confirmada y no puede ser entregada.',
+      });
+    }
+
+    // Buscar el modelo de Stock asociado la reserva y popúlalo
+    const stock = await Stock.findOne({ cebo: reserva.cebo });
+
+    // Verificar si se encontró el stock
+    if (!stock) {
+      return res
+        .status(404)
+        .json({ error: 'Stock no encontrado para el cebo de la reserva.' });
+    }
+
+    // Restar la cantidad de la reserva al stockTotal
+    stock.stockTotal -= reserva.cantidad;
+
+    // Guardar los cambios en el modelo de Stock
+    await stock.save();
+
+    // Cambiar el estado del pedido a "entregado"
+    reserva.estado = 'entregada';
+
+    // Guardar los cambios en el pedido
+    await reserva.save();
+
+    // Redirigir al controlador "stockage" para actualizar el stock
+    res.redirect(`http://localhost:8000/api/v1/stock/${reserva.cebo}`);
+  } catch (error) {
+    return next(error);
+  }
+};
 module.exports = {
   crearReserva,
   actualizarEstadoReserva,
   borrarReserva,
   getAllReservas,
+  entregarReserva,
 };

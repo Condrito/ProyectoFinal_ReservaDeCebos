@@ -1,3 +1,4 @@
+import { Navigate } from 'react-router-dom';
 import { autoLoginUser } from '../services/user.service';
 
 export const useAutoLogin = async (allUser, userLogin, setOkCheck) => {
@@ -21,6 +22,7 @@ export const useAutoLogin = async (allUser, userLogin, setOkCheck) => {
 
       const dataString = JSON.stringify(dataCustom);
       userLogin(dataString);
+
       setOkCheck(() => true);
     }
   } catch (error) {

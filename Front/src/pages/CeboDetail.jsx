@@ -7,7 +7,6 @@ import { mostrarCeboId } from '../services/cebos.service';
 export const CeboDetail = () => {
   const { ceboId } = useParams();
   const [res, setRes] = useState(null);
-  const [reload, setReload] = useState(0);
 
   const ceboView = async (id) => {
     setRes(await mostrarCeboId(id));
@@ -15,20 +14,14 @@ export const CeboDetail = () => {
 
   useEffect(() => {
     ceboView(ceboId);
-  }, [ceboId, reload]);
+  }, [ceboId]);
   useEffect(() => {
     useMostrarCeboIdError(res);
   }, [res]);
 
-  const cebo = res?.data;
-
-  const updateAndReload = () => {
-    setReload(reload + 1);
-  };
-
   return (
     <div>
-      <CeboCardUpdate ceboData={cebo} updateAndReload={updateAndReload} />
+      <CeboCardUpdate ceboData={res?.data} ceboView={ceboView} />
     </div>
   );
 };

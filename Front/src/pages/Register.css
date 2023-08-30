@@ -117,22 +117,7 @@ input[type='radio'] {
   display: none;
 }
 
-.sexo {
-  display: flex;
-  flex-wrap: no-wrap;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  margin-top: 20px;
-}
 
-.sexo .hombre {
-  border-radius: 3px 0 0 3px;
-  color: black !important;
-}
-.sexo .mujer {
-  border-radius: 0 3px 3px 0;
-  color: black !important;
-}
 
 .label-radio {
   background: #4537a057;

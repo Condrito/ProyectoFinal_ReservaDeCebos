@@ -33,19 +33,25 @@ export const UserDetail = () => {
   };
 
   return (
-    <div>
-      <p>{user?._id}</p>
-      <p>{user?.name}</p>
-      <p>{user?.email}</p>
-      <p>{user?.rol}</p>
-      <p>{user?.telf}</p>
-      <p>{formatDate(user?.createdAt)}</p>
-      <ChangeRolUser
-        userId={user?._id}
-        currentRol={user?.rol}
-        updateUserRole={updateUserRole}
-      />
-      <DeleteUserSuperAdmin userId={user?._id} />
+    <div className="user-list">
+      <div className="user-container detail">
+        <img className="profileCircleAvatar" src={user?.imagen} alt={user?.name} />
+        <div className="info-container">
+          <p>Nombre: {user?.name}</p>
+          <p>Email: {user?.email}</p>
+          <p>Rol: {user?.rol}</p>
+          <p>Teléfono: {user?.telf}</p>
+          <p>Fecha de registro: {formatDate(user?.createdAt)}</p>
+        </div>
+        <div className="function-container">
+          <ChangeRolUser
+            userId={user?._id}
+            currentRol={user?.rol}
+            updateUserRole={updateUserRole}
+          />
+          <DeleteUserSuperAdmin userId={user?._id} />
+        </div>
+      </div>
     </div>
   );
 };

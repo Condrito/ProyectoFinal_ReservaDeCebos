@@ -17,7 +17,9 @@ import {
   CeboDetail,
   CheckCode,
   Dashboard,
+  Entregas,
   ForgotPassword,
+  GestionCuentas,
   GestionarCatalogo,
   GestionarPedidos,
   GestionarReservas,
@@ -81,6 +83,14 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             }
           />
           <Route
+            path="/gestioncuentas"
+            element={
+              <ProtectedSuperAdmin>
+                <GestionCuentas />
+              </ProtectedSuperAdmin>
+            }
+          />
+          <Route
             path="/user/:userId"
             element={
               <Protected>
@@ -127,6 +137,14 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             element={
               <ProtectedAdmin>
                 <GestionarCatalogo />
+              </ProtectedAdmin>
+            }
+          />
+          <Route
+            path="/entregas"
+            element={
+              <ProtectedAdmin>
+                <Entregas />
               </ProtectedAdmin>
             }
           />

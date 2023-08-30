@@ -1,9 +1,6 @@
+import { Navigate } from 'react-router-dom';
 import './Home.css';
 
 export const Home = () => {
-  return (
-    <>
-      <h1 className="titulo">Servicio de reserva de cebo vivo</h1>
-    </>
-  );
+  return <Navigate to="/dashboard" />;
 };

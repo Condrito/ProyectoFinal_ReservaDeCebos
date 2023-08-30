@@ -14,6 +14,7 @@ const {
   getAllUsers,
   getUserById,
   deleteUserByAdmin,
+  autoLogin,
 } = require('../controllers/users.controller');
 const {
   isAuth,
@@ -44,6 +45,7 @@ UserRoutes.delete(
   [isAuthSuperAdmin],
   deleteUserByAdmin
 );
+UserRoutes.post('/login/autologin', autoLogin);
 
 // Ruta para obtener un solo usuario por su ID
 UserRoutes.get('/:userId', [isAuthSuperAdmin], getUserById);

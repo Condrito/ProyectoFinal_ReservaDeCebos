@@ -33,3 +33,33 @@ export const borrarPedidoUsuario = async (pedidoId) => {
     .then((res) => res)
     .catch((error) => error);
 };
+
+//! ------------------------------- MOSTRAR TODOS LOS PEDIDOS (ADMIN) -----------------------------------
+
+export const mostrarPedidos = async () => {
+  return APIuser.get(`/pedido/getallpedidos`, {
+    headers: { Authorization: `Bearer ${updateToken()}` },
+  })
+    .then((res) => res)
+    .catch((error) => error);
+};
+
+//! ------------------------------- CAMBIAR ESTADO PEDIDOS (ADMIN) -----------------------------------
+
+export const cambiarEstadoPedido = async (formData, pedidoId) => {
+  return APIuser.patch(`/pedido/actualizarestadopedido/${pedidoId}`, formData, {
+    headers: { Authorization: `Bearer ${updateToken()}` },
+  })
+    .then((res) => res)
+    .catch((error) => error);
+};
+
+//! ------------------------------- ENTREGAR PEDIDOS (ADMIN) -----------------------------------
+
+export const entregarPedido = async (pedidoId) => {
+  return APIuser.patch(`/pedido/entregarpedido/${pedidoId}`, {
+    headers: { Authorization: `Bearer ${updateToken()}` },
+  })
+    .then((res) => res)
+    .catch((error) => error);
+};

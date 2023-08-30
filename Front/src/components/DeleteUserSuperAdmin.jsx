@@ -41,7 +41,7 @@ export const DeleteUserSuperAdmin = ({ userId }) => {
     <>
       <button
         onClick={handleDeleteUser}
-        className="btn"
+        className="btn eliminar"
         type="submit"
         disabled={send}
         style={{ background: send ? '#49c1a388' : '#49c1a2' }}

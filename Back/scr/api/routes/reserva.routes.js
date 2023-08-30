@@ -6,6 +6,7 @@ const {
   actualizarEstadoReserva,
   borrarReserva,
   getAllReservas,
+  entregarReserva,
 } = require('../controllers/reservas.controller');
 
 const ReservaRoutes = express.Router();
@@ -17,6 +18,11 @@ ReservaRoutes.patch(
   [isAuthAdmin],
   actualizarEstadoReserva
 );
-ReservaRoutes.get('/getallreservas', [isAuthAdmin], getAllReservas);
+ReservaRoutes.get('/getallreservas', [isAuth], getAllReservas);
+ReservaRoutes.patch(
+  '/entregarreserva/:idReserva',
+  [isAuthAdmin],
+  entregarReserva
+);
 
 module.exports = ReservaRoutes;

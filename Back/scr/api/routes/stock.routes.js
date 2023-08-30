@@ -6,6 +6,7 @@ const {
   crearStock,
   modificarStock,
   inventario,
+  getAvailableCebos,
 } = require('../controllers/stocks.controller');
 
 const StockRoutes = express.Router();
@@ -13,6 +14,7 @@ const StockRoutes = express.Router();
 StockRoutes.patch('/:idCebo', [isAuthAdmin], stockage);
 StockRoutes.patch('/inventario/:idCebo', [isAuthAdmin], inventario);
 StockRoutes.patch('/modificarstock/:idCebo', [isAuthAdmin], modificarStock);
+StockRoutes.get('/getavailablecebos', [isAuth], getAvailableCebos);
 
 //·························REDIRECT···························
 

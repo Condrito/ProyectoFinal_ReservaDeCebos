@@ -1,0 +1,76 @@
+.userCard{
+  
+  max-height: 200px;
+}
+
+
+
+
+.user-list{
+  width: 100%;
+  min-height:70vh ;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4rem;
+  padding: 4rem;
+
+}
+.user-container{
+  background-color: #f7fffa;
+  box-shadow: 10px 10px 27px 0px rgba(0,0,0,0.37);
+  padding: 1rem;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items:flex-start;
+}
+
+.profileCircleAvatar {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: solid black 4px;
+  transition: 400ms;
+}
+.detail{
+ align-items: center;
+ justify-content: center;
+ gap: 1rem;
+}
+
+.function-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: normal;
+  gap: 8px;
+}
+
+.form-container{
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+
+}
+
+.btn{
+  background-color: #0082C3 !important;
+  color: black;
+}
+.btn:hover{
+  background-color: #62bcea !important;
+  color: white;
+}
+.eliminar{
+  background-color: red !important;
+}
+.eliminar:hover{
+  background-color: rgb(149, 49, 49) !important;
+  color: white;
+}

@@ -9,7 +9,7 @@ const ReservasSchema = new Schema(
     cantidad: { type: Number, default: 0, required: true },
     estado: {
       type: String,
-      enum: ['pendiente', 'confirmada', 'cancelada'],
+      enum: ['pendiente', 'confirmada', 'cancelada', 'entregada'],
       default: 'pendiente',
     },
     stocks: { type: mongoose.Schema.Types.ObjectId, ref: 'Stock' },

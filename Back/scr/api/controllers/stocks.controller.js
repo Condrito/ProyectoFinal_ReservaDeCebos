@@ -13,7 +13,6 @@ const {
 const crearStock = async (req, res, next) => {
   try {
     const { idCebo } = req.params;
-    console.log(req.params);
 
     // Verificar si el cebo con el id proporcionado existe
     const ceboExistente = await Cebo.findById(idCebo);
@@ -87,7 +86,9 @@ const stockage = async (req, res, next) => {
         stockExistente.stockTotal -
         cantidadTotalPedidos -
         cantidadTotalReservas;
-
+      // Calculamos la cantidad total entre pedidos y reservas confirmadas
+      stockExistente.CantidadesPedidosReservas =
+        cantidadTotalPedidos + cantidadTotalReservas;
       // Actualizamos la fecha y hora del stock
       stockExistente.fechaStockActualizado = fecha;
       stockExistente.horaStockActualizado = hora;
@@ -165,11 +166,12 @@ const inventario = async (req, res, next) => {
 
       // Guardamos los cambios en el stock existente
       const updatedStock = await stockExistente.save();
-
+      console.log(updatedStock);
       // Verificamos si se guardaron los cambios correctamente
       if (updatedStock) {
         // Actualizamos el documento 'cebo' con el ID del stock actualizado
         const cebo = await Cebo.findById(req.params.idCebo);
+        console.log(cebo);
         cebo.stocks = updatedStock._id;
         await cebo.save();
 
@@ -216,11 +218,15 @@ const modificarStock = async (req, res, next) => {
     // Verificamos si se encontró el stock existente
     if (stockExistente) {
       // Realizamos la operación en el stock total
-      stockExistente.stockTotal += valorOperar;
+      stockExistente.stockTotal += valorOperar; // Actualización del stock
+
+      // Guardamos los cambios en el stock existente antes de continuar
+      await stockExistente.save(); // Aseguramos que la operación de guardado se complete
 
       // Redireccionamos al controlador 'stockage' para actualizar el stock
       req.body.stockTotal = stockExistente.stockTotal;
-      return stockage(req, res, next);
+
+      return stockage(req, res, next); // Continuamos con el segundo controlador
     } else {
       // Si no se encontró un stock existente, respondemos con un mensaje de error
       return res
@@ -232,9 +238,47 @@ const modificarStock = async (req, res, next) => {
   }
 };
 
+//--------------------------------------------------------------------------------
+//···················· GET STOCK DISPONIBLE Y RECUPERA EL CEBO···················
+//--------------------------------------------------------------------------------
+
+const getAvailableCebos = async (req, res, next) => {
+  try {
+    const availableStocks = await Stock.find({ stockDisponible: { $gt: 0 } });
+
+    if (!availableStocks || availableStocks.length === 0) {
+      return res
+        .status(404)
+        .json({ error: 'No se encontraron cebos disponibles.' });
+    }
+
+    const cebosPromises = availableStocks.map(async (stock) => {
+      const cebo = await Cebo.findOne({ stocks: stock._id });
+      if (!cebo) {
+        throw new Error('No se encontró el cebo correspondiente.');
+      }
+      return {
+        cebo,
+        stockDisponible: stock.stockDisponible,
+      };
+    });
+
+    const cebosWithStock = await Promise.all(cebosPromises);
+
+    return res.status(200).json(cebosWithStock);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+module.exports = {
+  getAvailableCebos,
+};
+
 module.exports = {
   stockage,
   crearStock,
   modificarStock,
   inventario,
+  getAvailableCebos,
 };

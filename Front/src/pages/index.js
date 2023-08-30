@@ -20,3 +20,5 @@ export * from './GestionarReservas';
 export * from './GestionarStock';
 export * from './CeboDetail';
 export * from './CeboAdd';
+export * from './Entregas';
+export * from './GestionCuentas';

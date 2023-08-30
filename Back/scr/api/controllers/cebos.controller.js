@@ -4,6 +4,9 @@ const {
 const Cebo = require('../models/cebo.model');
 const dotenv = require('dotenv');
 const Stock = require('../models/stock.model');
+const Pedido = require('../models/pedido.model');
+const Reserva = require('../models/reserva.model');
+const User = require('../models/user.model');
 
 dotenv.config();
 
@@ -28,7 +31,9 @@ const añadirAlCatalogo = async (req, res, next) => {
 
       if (postCebo) {
         // Redirección a la ruta para crear un stock con el ID del cebo recién creado
+
         return res.redirect(
+          308,
           `http://localhost:8000/api/v1/stock/crearstock/${postCebo._id}`
         );
       } else {
@@ -52,6 +57,7 @@ const updateCebo = async (req, res, next) => {
   const { id } = req.params;
   try {
     await Cebo.syncIndexes();
+    console.log(req.body);
 
     const patchCebo = new Cebo(req.body);
 
@@ -71,6 +77,7 @@ const updateCebo = async (req, res, next) => {
       }
 
       const updateCebo = await Cebo.findById(id);
+      console.log(updateCebo);
 
       const updateKeys = Object.keys(req.body);
 
@@ -111,17 +118,96 @@ const updateCebo = async (req, res, next) => {
 //--------------------------------------------------------------------------------
 //··································DELETE········································
 //--------------------------------------------------------------------------------
-
 const deleteCebo = async (req, res, next) => {
   const { id } = req.params;
+
   try {
-    const ceboBuscado = await Cebo.findByIdAndDelete(id);
-    if (await Cebo.findById(id)) {
-      return res.status(404).json('Dont delete');
-    } else {
-      deleteImgCeboCloudinary(ceboBuscado.imagen);
-      return res.status(200).json('ok delete');
+    // Buscar el cebo a eliminar y almacenar su imagen para su posterior eliminación
+    const ceboBuscado = await Cebo.findById(id).populate('stocks');
+    if (!ceboBuscado) {
+      return res.status(404).json('Cebo no encontrado');
     }
+
+    // Verificar si existen pedidos con estado "pendiente" o "confirmado" que contienen este cebo
+    const pedidosPendientesConfirmados = await Pedido.exists({
+      cebo: id,
+      estado: { $in: ['pendiente', 'confirmado'] },
+    });
+
+    // Verificar si existen reservas con estado "pendiente" o "confirmada" que contienen este cebo
+    const reservasPendientesConfirmadas = await Reserva.exists({
+      cebo: id,
+      estado: { $in: ['pendiente', 'confirmada'] },
+    });
+
+    if (pedidosPendientesConfirmados || reservasPendientesConfirmadas) {
+      return res
+        .status(409)
+        .json(
+          'No se puede eliminar el cebo con pedidos o reservas pendientes o confirmadas'
+        );
+    }
+
+    // Obtener la lista de pedidos asociados al cebo
+    const pedidosCebo = await Cebo.findById(id).populate('pedidos');
+
+    for (const pedido of pedidosCebo.pedidos) {
+      // Buscar el usuario asociado al pedido
+      const idPedido = pedido._id;
+      const user = await User.findById(pedido.user);
+
+      // Verificar si el usuario existe
+      if (!user) {
+        return res.status(404).json({ error: 'Usuario no encontrado.' });
+      }
+      const arrayPedidos = user.pedidos;
+
+      // Eliminar el pedido del array de pedidos del usuario
+      arrayPedidos.pull(idPedido);
+
+      await User.findByIdAndUpdate(user._id, { pedidos: arrayPedidos });
+
+      // No es necesario guardar los cambios en el usuario, ya que se actualizan automáticamente
+
+      // Eliminar el pedido de la base de datos
+      await Pedido.findByIdAndDelete(idPedido);
+    }
+    // Obtener la lista de reservas asociadas al cebo
+    const reservasCebo = await Cebo.findById(id).populate('pedidos');
+
+    for (const reserva of reservasCebo.reservas) {
+      // Buscar el usuario asociado a la reserva
+      const idReserva = reserva._id;
+      const user = await User.findById(reserva.user);
+
+      // Verificar si el usuario existe
+      if (!user) {
+        return res.status(404).json({ error: 'Usuario no encontrado.' });
+      }
+      const arrayReservas = user.reservas;
+
+      // Eliminar la reserva del array de reservas del usuario
+      arrayReservas.pull(idReserva);
+
+      await User.findByIdAndUpdate(user._id, { reservas: arrayReservas });
+
+      // Eliminar la reserva de la base de datos
+      await Reserva.findByIdAndDelete(idReserva);
+    }
+    // Eliminar el cebo del catálogo
+    await Cebo.findByIdAndDelete(id);
+
+    // Eliminar el stock asociado al cebo
+    const stockId = ceboBuscado.stocks._id;
+    if (stockId) {
+      await Stock.findByIdAndDelete(stockId);
+    }
+
+    // // Eliminar la imagen asociada al cebo desde Cloudinary
+
+    deleteImgCeboCloudinary(ceboBuscado.imagen);
+
+    return res.status(200).json('Cebo eliminado correctamente');
   } catch (error) {
     return next(error);
   }
@@ -176,7 +262,6 @@ const getByNameCebo = async (req, res, next) => {
 const getByIdCebo = async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log(id);
 
     /// populate nos sirve para que los elementos del Schema del modelo que esten
     //con objectID podamos acceder a su info de otro modelo
@@ -184,7 +269,7 @@ const getByIdCebo = async (req, res, next) => {
     if (cebosById) {
       return res.status(200).json(cebosById);
     } else {
-      return res.status(404).json('Error controller GetById Cebos');
+      return res.status(404).json('Usuario no encontrado');
     }
   } catch (error) {
     return next(error);

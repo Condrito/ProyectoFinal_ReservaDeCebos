@@ -15,7 +15,7 @@
 
 }
 .pedidoContainer{
-    border: solid red 1px;
+    border: solid #EE000C 1px;
     
     
     display: flex;
@@ -28,3 +28,64 @@
     gap:1rem
 
 }
+
+.pedidos-page-container{
+    background-color: white;
+    width: 100%;
+    min-height: 70vh;
+    color: black;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 1rem;
+    
+
+}
+.pedidos-user{
+    background-color:  #f7fffa;
+    box-shadow: 10px 10px 27px 0px rgba(0,0,0,0.37);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+
+  
+.pedir-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+}
+/* Estilos para dispositivos móviles */
+@media (max-width: 768px) {
+    .pedir-container{
+        width: 100%;
+    }
+
+  }
+  
+  /* Estilos para tabletas */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .pedir-container{
+        width: 40%;
+    }
+  }
+  
+  /* Estilos para escritorios */
+  @media (min-width: 1025px) {
+    .pedir-container{
+        width: 50%;
+    }
+   
+  }
+  

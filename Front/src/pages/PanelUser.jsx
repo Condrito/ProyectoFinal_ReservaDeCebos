@@ -4,18 +4,17 @@ import { Link } from 'react-router-dom';
 export const PanelUser = () => {
   return (
     <>
-      <div>PanelUser</div>
-      <ul>
-        <li>
-          <Link to="/pedidosusers">Pide</Link>
+      <ul className="panel-container user">
+        <li className="panel-button">
+          <Link to="/pedidosusers">Realizar Pedidos</Link>
         </li>
-        <li>
-          <Link to="/reservasusers">Reserva</Link>
+        <li className="panel-button">
+          <Link to="/reservasusers">Realizar Reservas</Link>
         </li>
-        <li>
+        <li className="panel-button">
           <Link to="/mispedidos">Mis Pedidos</Link>
         </li>
-        <li>
+        <li className="panel-button">
           <Link to="/misreservas">Mis Reservas</Link>
         </li>
       </ul>

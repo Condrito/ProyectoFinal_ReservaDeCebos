@@ -24,7 +24,7 @@ export const DayPicker = ({ fechaDelPedido, onDateChange }) => {
 
   return (
     <div className="day-picker">
-      <label>Select a day:</label>
+      <label>Selecciona un día:</label>
       <DatePicker
         selected={startDate}
         onChange={handleDateChange}

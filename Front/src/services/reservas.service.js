@@ -32,3 +32,32 @@ export const borrarReservaUsuario = async (reservaId) => {
     .then((res) => res)
     .catch((error) => error);
 };
+//! ------------------------------- MOSTRAR TODAS LOS RESERVAS (ADMIN) -----------------------------------
+
+export const mostrarReservas = async () => {
+  return APIuser.get(`/reserva/getallreservas`, {
+    headers: { Authorization: `Bearer ${updateToken()}` },
+  })
+    .then((res) => res)
+    .catch((error) => error);
+};
+
+//! ------------------------------- CAMBIAR ESTADO RESERVA (ADMIN) -----------------------------------
+
+export const cambiarEstadoReserva = async (formData, reservaId) => {
+  return APIuser.patch(`/reserva/actualizarestadoreserva/${reservaId}`, formData, {
+    headers: { Authorization: `Bearer ${updateToken()}` },
+  })
+    .then((res) => res)
+    .catch((error) => error);
+};
+
+//! ------------------------------- ENTREGAR RESERVAS (ADMIN) -----------------------------------
+
+export const entregarReserva = async (reservaId) => {
+  return APIuser.patch(`/reserva/entregarreserva/${reservaId}`, {
+    headers: { Authorization: `Bearer ${updateToken()}` },
+  })
+    .then((res) => res)
+    .catch((error) => error);
+};

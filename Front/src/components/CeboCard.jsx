@@ -1,13 +1,20 @@
 import React from 'react';
+import './CeboCard.css';
 
 export const CeboCard = ({ ceboData }) => {
-  console.log(ceboData);
   return (
-    <div>
-      <h3>{ceboData?.ceboVivo}</h3>
-      <img className="catalogoImg" src={ceboData?.imagen} alt={ceboData?.ceboVivo} />
-      <h2>{ceboData?.precio} €</h2>
-      <p>{ceboData?.codigo}</p>
+    <div className="cebo-container">
+      <h2>{ceboData?.ceboVivo}</h2>
+      <img
+        className="catalogoImg CircleCebo"
+        src={ceboData?.imagen}
+        alt={ceboData?.ceboVivo}
+      />
+      <div className="precio">
+        <h2>{ceboData?.precio} €</h2>
+      </div>
+
+      <p>Cod: {ceboData?.codigo}</p>
     </div>
   );
 };
